@@ -1,8 +1,9 @@
-import basc_py4chan
 import time
 import datetime as datetime
 
-import smtk.logger as l
+import basc_py4chan
+
+import smtk.utils.logger as l
 
 
 class ChanMonitor:

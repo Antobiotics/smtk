@@ -1,6 +1,6 @@
 import twitter
 
-import smtk.logger as l
+import smtk.utils.logger as l
 from smtk.utils import helpers
 
 # twitter.py conflicts with python-twitter library
