@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d3c763d7bdd125b363e40bb65ace30f6c8472afa857d05da4da02cbed82775cb"
+            "sha256": "e3594ab994fa91f7836b5368f20ec478c21c7cc0ed36648f504db5a383ae9cc2"
         },
         "requires": {},
         "sources": [
@@ -103,6 +103,10 @@
         "pycodestyle": {
             "hash": "sha256:6c4245ade1edfad79c3446fadfc96b0de2759662dc29d07d80a6f27ad1ca6ba9",
             "version": "==2.3.1"
+        },
+        "pymongo": {
+            "hash": "sha256:5a3729466eb9d834b4e5f24a9a39108800b66b0a703da8f52eb69ff0583744c3",
+            "version": "==3.4.0"
         },
         "pyparsing": {
             "hash": "sha256:fee43f17a9c4087e7ed1605bd6df994c6173c1e977d7ade7b651292fab2bd010",

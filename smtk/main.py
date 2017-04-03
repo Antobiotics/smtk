@@ -2,11 +2,17 @@ import click
 
 import smtk.utils.logger as l
 
+from smtk.commands.cli import TargetCommand
 from smtk.commands.cli import TwitterCommand
+
 
 @click.group()
 def main(**kwargs):
     l.INFO("Starting SMTK")
+
+@main.command(cls=TargetCommand)
+def target():
+    l.INFO("Target Command Detected")
 
 @main.command(cls=TwitterCommand)
 def twitter():

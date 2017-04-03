@@ -59,6 +59,12 @@ class SMTKCommand(click.MultiCommand):
         return mod.cli
 
 
+class TargetCommand(SMTKCommand):
+    @property
+    def sub_folder(self):
+        return 'targets'
+
+
 class TwitterCommand(SMTKCommand):
     @property
     def sub_folder(self):

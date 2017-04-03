@@ -21,7 +21,7 @@ setup(
     packages=[
         "smtk",
         "smtk.utils",
-        "smtk.examples"
+        "smtk.examples",
         "smtk.commands",
         "smtk.commands.twitter"
     ],
