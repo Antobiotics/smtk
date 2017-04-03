@@ -22,6 +22,8 @@ setup(
         "smtk",
         "smtk.utils",
         "smtk.examples"
+        "smtk.commands",
+        "smtk.commands.twitter"
     ],
     install_requires=[]
 )
