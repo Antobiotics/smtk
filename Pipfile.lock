@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bc9145a5bed75a18ac4d6045dc79a1ae254421c4e54ebba411e74eb6a26eabf7"
+            "sha256": "1f6b3eb05921ef1c06633ab896c0aabfe919362c0a8273a00c80ea261966d013"
         },
         "requires": {},
         "sources": [
@@ -15,6 +15,7 @@
         "BASC-py4chan": "*",
         "autopep8": "*",
         "better_exceptions": "*",
+        "click": "*",
         "coloredlogs": "*",
         "dataset": "*",
         "facepy": "*",
