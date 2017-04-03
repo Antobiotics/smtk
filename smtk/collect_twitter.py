@@ -97,6 +97,7 @@ class CollectTwitter:
         for id_ in ids:
             self._stream_tweets_by_user_id(id_, limit=limit)
 
+
     def _fetch_users_by_id(self, ids=None, stream=True):
         if len(ids) > 100:
             raise RuntimeError("Too many users to fetch, got: %s" %(len(ids)))
