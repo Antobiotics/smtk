@@ -31,7 +31,7 @@ Interesting in contributing? Please join us in #assemble and checkout our [contr
 ```python
 > make setup-dev
 > pipenv run python smtk.py
-
+> pipenv run python smtk.py twitter get_friends --input_data tests/data/twitter_users.csv | pipenv run python smtk.py target mongodb
 ```
 
 #### Using 4chan API
