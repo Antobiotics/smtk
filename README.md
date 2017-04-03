@@ -25,6 +25,15 @@ SMTK grew out online community research we are doing at [Data for Democracy](htt
 
 Interesting in contributing? Please join us in #assemble and checkout our [contributors guide](./CONTRIBUTING.md) and join us in our slack channel [#assemble](https://datafordemocracy.slack.com/messages/assemble/)
 
+
+### Getting Started:
+
+```python
+> make setup-dev
+> pipenv run python smtk.py
+
+```
+
 #### Using 4chan API
 
 ```python
