@@ -48,6 +48,9 @@ class CollectTwitter:
         if not screen_names is None:
             ids += self._screen_names_to_ids(screen_names)
 
+        print screen_names
+        print ids
+
         for id_ in ids:
             self._stream_friends_by_id(id_, request_limit=3)
 
