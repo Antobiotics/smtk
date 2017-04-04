@@ -39,18 +39,33 @@ class GetFriendsLogger(CollectTwitter):
 @click.command('get_friends', short_help='Outputs Twitter friends for users in `--users`')
 @click.option('--users', required=False,
               help="CSV list of user_ids")
-@click.option('--input_data', type=click.File('rb'))
+@click.option('--from_file', required=False)
+@click.option('--from_pipe/--not-from-pipe', default=False)
 @pass_context
-def cli(ctx, users, input_data):
+def cli(ctx, users, from_file, from_pipe):
     collector = GetFriendsLogger()
     screen_names = []
 
     if not users is None:
         screen_names = users.split(',')
-    elif not input_data is None:
-        reader = csv.reader(input_data)
+
+    if not from_file is None:
+        reader = csv.reader(from_file)
         for row in reader:
             screen_names.append(row[0])
+
+    if from_pipe:
+        try:
+            stdin_text = (
+                click
+                .get_text_stream('stdin')
+                .read().strip()
+            ).split('\n')
+            for line in stdin_text:
+                screen_names.append(line)
+        except Exception as e:
+            raise RuntimeError("Error while reading pipe: %s" %(e))
+
 
     l.INFO("Getting user relationship for users: %s" %(screen_names))
     collector.get_friends(screen_names=screen_names)
