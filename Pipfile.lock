@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "e3594ab994fa91f7836b5368f20ec478c21c7cc0ed36648f504db5a383ae9cc2"
+            "sha256": "ea08a888f590268e3099ee993f6ff6ae2fa8f9dbac488954920532a4af4fd21f"
         },
         "requires": {},
         "sources": [
@@ -16,6 +16,10 @@
             "hash": "sha256:568ead77e22593d24c52d73ff13edf712f8f4766456a89547a97f2e553abeed1",
             "version": "==0.6.3"
         },
+        "Jinja2": {
+            "hash": "sha256:2231bace0dfd8d2bf1e5d7e41239c06c9e0ded46e70cc1094a0aa64b0afeb054",
+            "version": "==2.9.6"
+        },
         "Mako": {
             "hash": "sha256:48559ebd872a8e77f92005884b3d88ffae552812cdf17db6768e5c3be5ebbe0d",
             "version": "==1.0.6"
@@ -29,8 +33,8 @@
             "version": "==3.12"
         },
         "SQLAlchemy": {
-            "hash": "sha256:e6f2b0c0b89fad86ff589c2d1da88cc8a88f88a2818a8c5e3b9717ac81ce979e",
-            "version": "==1.1.8"
+            "hash": "sha256:b65cdc73cd348448ef0164f6c77d45a9f27ca575d3c5d71ccc33adf684bc6ef0",
+            "version": "==1.1.9"
         },
         "alembic": {
             "hash": "sha256:767cf6c8c4578f1f625f17bfbc8716a7d4f80a0c1efc7a9b72af30ad68954962",
@@ -55,6 +59,10 @@
         "click": {
             "hash": "sha256:29f99fc6125fbc931b758dc053b3114e55c77a6e4c6c3a2674a2dc986016381d",
             "version": "==6.7"
+        },
+        "click-completion": {
+            "hash": "sha256:079fb138887d4de12a0b7fbebf8d92d396b7c1a9c49f63475d9f3909d2588976",
+            "version": "==0.2.1"
         },
         "coloredlogs": {
             "hash": "sha256:b97cd81e39f359b4d6310881633dadc4dc77ea9b2f035941fe8c6d4be1a7d5c4",
@@ -141,8 +149,8 @@
             "version": "==34.3.3"
         },
         "singer-python": {
-            "hash": "sha256:082b71f3e069c797dec0ba7d11faaf555f78089cae630c61461c949e74a0437e",
-            "version": "==0.3.1"
+            "hash": "sha256:3a9295eac9b70a12f9313cfd42e4803c98a1f0df3f6b00dd34f44ecab285e91d",
+            "version": "==1.0.0"
         },
         "six": {
             "hash": "sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1",

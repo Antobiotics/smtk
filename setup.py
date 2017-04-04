@@ -25,5 +25,18 @@ setup(
         "smtk.commands",
         "smtk.commands.twitter"
     ],
-    install_requires=[]
+    install_requires=[
+        'python-twitter',
+        'pytest-cov',
+        'dataset',
+        'autopep8',
+        'coloredlogs',
+        'click',
+        'facepy',
+        'singer-python',
+        'pymongo',
+        'click-completion',
+        'better_exceptions',
+        'BASC-py4chan'
+    ]
 )
