@@ -22,7 +22,8 @@ class GetFriendsLogger(CollectTwitter):
         pass
 
     def on_start(self):
-        singer.write_schema('get_friends', self.schema)
+        singer.write_schema('get_friends',
+                            self.schema, ['account', 'connection'])
 
     def on_profile(self, profile):
         print profile

@@ -163,8 +163,8 @@ class CollectTwitter:
     def _stream_friends_by_id(self, user_id, request_limit=3):
         kwargs = dict(
             user_id=user_id,
-            cursor=-1,
-            total_count=request_limit * 5000
+            cursor=-1
+            #total_count=request_limit * 5000
         )
 
         l.INFO("Getting friends %s" % (kwargs))
