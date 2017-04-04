@@ -1,10 +1,12 @@
 import click
+import click_completion
 
 import smtk.utils.logger as l
 
 from smtk.commands.cli import TargetCommand
 from smtk.commands.cli import TwitterCommand
 
+click_completion.init()
 
 @click.group()
 def main(**kwargs):
