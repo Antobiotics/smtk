@@ -1,21 +1,13 @@
 import json
-
 import click
-
-from pymongo import MongoClient
 
 import smtk.utils.logger as l
 from smtk.commands.cli import pass_context
 
-# TODO: Read From config file.
-# Model mongo data from singer schema
-# Upsert instead?
-
 PARSING_ERROR = "Unable to parse:\n%s \nReason: %s"
 MISSING_KEY_ERROR = "Line is missing required key '%s':\n%s"
 
-def insert_lines(collection, lines):
-
+def convert(lines):
     for line in lines:
         try:
             data = json.loads(line)
@@ -32,21 +24,20 @@ def insert_lines(collection, lines):
                 raise Exception(MISSING_KEY_ERROR%('stream', line))
 
             record = data['record']
-            collection.insert_one(record)
+            record_values = []
+            for key in record:
+                record_values.append(str(record[key]))
+
+            print ','.join(record_values)
 
         else:
             l.WARN("""
                    Unexpected message type %s in message %s
                    """ %(data['type'], data))
 
-
-@click.command('mongodb', short_help="Write JSON data to mongodb")
+@click.command('csv', short_help="Write JSON data to CSV")
 @click.option('--config')
 @pass_context
 def cli(ctx, config):
-    client = MongoClient('rs1deep.local', 27017)
-    db = client.twitter_connections
-    collection = db.relationships
-
     input_ = click.get_text_stream('stdin')
-    insert_lines(collection, input_)
+    convert(input_)
