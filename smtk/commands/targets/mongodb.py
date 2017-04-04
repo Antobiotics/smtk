@@ -7,6 +7,10 @@ from pymongo import MongoClient
 import smtk.utils.logger as l
 from smtk.commands.cli import pass_context
 
+# TODO: Read From config file.
+# Model mongo data from singer schema
+# Upsert instead?
+
 PARSING_ERROR = "Unable to parse:\n%s \nReason: %s"
 MISSING_KEY_ERROR = "Line is missing required key '%s':\n%s"
 
