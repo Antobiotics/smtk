@@ -26,15 +26,15 @@ SMTK grew out online community research we are doing at [Data for Democracy](htt
 Interesting in contributing? Please join us in #assemble and checkout our [contributors guide](./CONTRIBUTING.md) and join us in our slack channel [#assemble](https://datafordemocracy.slack.com/messages/assemble/)
 
 
-### Getting Started:
+## Getting Started:
 
-```python
-> make setup-dev
-> pipenv run python smtk.py
-> pipenv run python smtk.py twitter get_friends --input_data tests/data/twitter_users.csv | pipenv run python smtk.py target mongodb
+### Installation:
+
+```
+> make install
 ```
 
-#### Using 4chan API
+### Using 4chan API
 
 ```python
 from smtk.fourchan import ChanMonitor
@@ -65,3 +65,9 @@ class DemoChan(ChanMonitor):
 ```
 
 [Here](https://github.com/bstarling/fourchan_monitor) is an example of the chan monitor feeding our [Eventador](https://github.com/bstarling/assemble/tree/master/eventador) hosted kafka cluster .
+
+### Using SMTK for building quick data pipelines:
+
+```
+> cat tests/data/twitter_users.csv | python smtk.py twitter get_friends --from_pipe | python smtk.py target csv
+```
