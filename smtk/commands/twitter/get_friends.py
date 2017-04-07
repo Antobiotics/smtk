@@ -5,7 +5,7 @@ import singer
 
 import smtk.utils.logger as l
 from smtk.commands.cli import pass_context
-from smtk.collect_twitter import CollectTwitter
+from smtk.twitter import CollectTwitter
 
 class GetFriendsLogger(CollectTwitter):
     @property
