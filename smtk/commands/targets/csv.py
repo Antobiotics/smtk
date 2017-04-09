@@ -13,6 +13,12 @@ from smtk.commands.cli import pass_context
 PARSING_ERROR = "Unable to parse:\n%s \nReason: %s"
 MISSING_KEY_ERROR = "Line is missing required key '%s':\n%s"
 
+CSV_DEFAULT_CONFIG = {
+    'output_file': "",
+    'delimiter': ',',
+    'quotechar': '"'
+}
+
 def is_file_empty(filename):
     return (
         (not os.path.isfile(filename)) or
@@ -20,9 +26,9 @@ def is_file_empty(filename):
     )
 
 def convert(lines, configuration):
-    cfg_filename = configuration.get('output_file', None)
-    delimiter = configuration.get('delimiter', ',')
-    quotechar = configuration.get('quote', '"')
+    cfg_filename = str(configuration.get('output_file', ""))
+    delimiter = str(configuration.get('delimiter', ','))
+    quotechar = str(configuration.get('quotechar', '"'))
 
     for line in lines:
         try:
@@ -40,9 +46,9 @@ def convert(lines, configuration):
                 raise Exception(MISSING_KEY_ERROR%('stream', line))
 
             filename = cfg_filename
-            if filename is None:
+            if filename == "":
                 filename = data['stream'] + '.csv'
-
+            print filename
             flattened_record = flatten(data['record'])
             header = flattened_record.keys()
 
@@ -55,7 +61,7 @@ def convert(lines, configuration):
 
                 if is_file_empty(filename):
                     writer.writeheader()
-
+                print flattened_record
                 writer.writerow(flattened_record)
 
 
@@ -68,9 +74,14 @@ def convert(lines, configuration):
 @click.option('--config')
 @pass_context
 def cli(ctx, config):
+    csv_config = {}
 
-    with open(config, 'r'):
-        csv_config = json.loads(config)
+    try:
+        with open(config, 'r') as config_file:
+            csv_config = json.load(config_file)
+            l.INFO("Using custom CSV configuration: %s" %(csv_config))
+    except TypeError:
+        l.WARN("Using default CSV configuration: %s" %(CSV_DEFAULT_CONFIG))
 
     input_ = click.get_text_stream('stdin')
     convert(input_, configuration = csv_config)
