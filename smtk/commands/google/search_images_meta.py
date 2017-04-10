@@ -9,9 +9,9 @@ from pattern.web import Element, plaintext
 import smtk.utils.logger as l
 
 from smtk.commands.cli import pass_context
-from smtk.google import GoogleImageCrawler
+from smtk.google import GoogleImageKeywordCrawler, GoogleImageCrawler
 
-class GoogleImageMetaDataLogger(GoogleImageCrawler):
+class GoogleImageMetaDataLogger(GoogleImageKeywordCrawler):
 
     @property
     def schema(self):
@@ -22,25 +22,25 @@ class GoogleImageMetaDataLogger(GoogleImageCrawler):
             }
         }
 
-    def build_stream_name(self, keyword):
-        return "g_images__meta__%s" % (keyword)
+    @property
+    def stream_name(self):
+        return "g_images__meta__%s" % (self.keyword)
 
-    def on_start(self, keyword):
+    def on_start(self):
         l.INFO("""
                Starting GoogleImageCrawler for keyword: %s
-               """ % (keyword))
-        singer.write_schema(self.build_stream_name(keyword),
+               """ % (self.keyword))
+        singer.write_schema(self.stream_name,
                             self.schema, ['image', 'link'])
 
-    def on_entry(self, keyword, entry):
+    def on_entry(self, entry):
         data = {
             'image': entry['ou'],
             'link': entry['ru']
         }
-        stream_name = self.build_stream_name(keyword)
-        singer.write_records(stream_name, [data])
+        singer.write_records(self.stream_name, [data])
 
-    def on_page_source(self, keyword):
+    def on_page_source(self):
         elements = (
             Element(self.page_source)
             .by_tag('div.rg_meta')
@@ -50,7 +50,7 @@ class GoogleImageMetaDataLogger(GoogleImageCrawler):
             meta_data_str = plaintext(element.source)
             try:
                 meta_data = json.loads(meta_data_str)
-                self.on_entry(keyword, meta_data)
+                self.on_entry(meta_data)
             except Exception as e:
                 l.WARN(e)
 
@@ -82,6 +82,7 @@ def cli(ctx, scroll_max, from_file, from_pipe):
     if len(keywords) == 0:
         l.WARN("Nothing to search, got: %s" %(keywords))
 
-    crawler = GoogleImageMetaDataLogger(keywords,
-                                        scroll_max=scroll_max)
-    crawler.crawl()
+    crawler = GoogleImageCrawler(task_cls=GoogleImageMetaDataLogger,
+                                 queue_data=keywords,
+                                 scroll_max=scroll_max)
+    crawler.start()

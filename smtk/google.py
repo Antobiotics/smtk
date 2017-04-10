@@ -1,5 +1,9 @@
 import time
 import random
+import Queue
+import multiprocessing
+
+from threading import Thread
 
 from selenium.webdriver import Chrome
 
@@ -15,10 +19,10 @@ def random_sleep():
     time.sleep(sleep_sec)
 
 
-class GoogleImageCrawler:
+class GoogleImageKeywordCrawler():
 
-    def __init__(self, keywords, scroll_max = 3):
-        self.keywords = keywords
+    def __init__(self, keyword, scroll_max = 3):
+        self.keyword = keyword
         self.scroll_max = scroll_max
         self.page_source = None
 
@@ -32,24 +36,24 @@ class GoogleImageCrawler:
                         '&ei=0eZEVbj3IJG5uATalICQAQ&ved=0CAcQ_AUoAQ',
                         '&biw=939&bih=591'])
 
-    def on_start(self, keyword):
+    def on_start(self):
         pass
 
-    def on_entry(self, keyword, entry):
+    def on_entry(self, entry):
         raise RuntimeError('on_entry must be implemented')
 
-    def on_page_source(self, keyword):
+    def on_page_source(self):
         raise RuntimeError("on_page_source must be implemented")
 
 
-    def build_search_url(self, keyword):
+    def build_search_url(self):
         return ''.join([
             self.search_url_prefix,
-            keyword,
+            self.keyword,
             self.search_url_suffix])
 
-    def update_page_source(self, keyword):
-        url = self.build_search_url(keyword)
+    def update_page_source(self):
+        url = self.build_search_url()
 
         driver = Chrome()
         driver.get(url)
@@ -69,12 +73,55 @@ class GoogleImageCrawler:
 
         driver.close()
 
-    def crawl_keyword(self, keyword):
-        self.update_page_source(keyword)
-        self.on_page_source(keyword)
+    def crawl_keyword(self):
+        self.update_page_source()
+        self.on_page_source()
 
     def crawl(self):
-        for keyword in self.keywords:
-            self.on_start(keyword)
-            self.crawl_keyword(keyword)
+        self.on_start()
+        self.crawl_keyword()
+
+
+class GoogleImageCrawler():
+
+    def __init__(self, task_cls, queue_data, **kwargs):
+        self.task_cls = task_cls
+        self.queue_data = queue_data
+        self.queue = Queue.Queue()
+        self.__dict__.update(kwargs)
+
+    @property
+    def num_cpus(self):
+        return multiprocessing.cpu_count()
+
+    def enqueue(self):
+        for obj in self.queue_data:
+            self.queue.put(obj)
+
+    def worker(self):
+        while not self.queue.empty():
+            try:
+                keyword = self.queue.get()
+
+                (
+                    self.task_cls(keyword=keyword,
+                                  scroll_max=self.__dict__['scroll_max'])
+                    .crawl()
+                )
+
+                self.queue.task_done()
+            except Exception as e:
+                l.ERROR(e)
+                break
+
+    def start(self):
+        self.enqueue()
+
+        for _ in range(self.num_cpus):
+            t = Thread(target=self.worker)
+            t.deamon = True
+            t.start()
+
+        self.queue.join()
+
 
