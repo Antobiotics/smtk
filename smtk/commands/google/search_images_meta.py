@@ -1,4 +1,5 @@
 import csv
+import json
 
 import click
 import singer
@@ -25,18 +26,21 @@ class GoogleImageMetaDataLogger(GoogleImageCrawler):
         return "g_images__meta__%s" % (keyword)
 
     def on_start(self, keyword):
+        l.INFO("""
+               Starting GoogleImageCrawler for keyword: %s
+               """ % (keyword))
         singer.write_schema(self.build_stream_name(keyword),
                             self.schema, ['image', 'link'])
 
     def on_entry(self, keyword, entry):
         data = {
-            'image': entry['out'],
-            'link': entry['tu']
+            'image': entry['ou'],
+            'link': entry['ru']
         }
         stream_name = self.build_stream_name(keyword)
         singer.write_records(stream_name, [data])
 
-    def on_page_source(self):
+    def on_page_source(self, keyword):
         elements = (
             Element(self.page_source)
             .by_tag('div.rg_meta')
@@ -50,8 +54,8 @@ class GoogleImageMetaDataLogger(GoogleImageCrawler):
             except Exception as e:
                 l.WARN(e)
 
-@click.command('get_images_meta')
-@click.option('scroll_max', required=False, default=2)
+@click.command('search_images_meta')
+@click.option('--scroll_max', required=False, default=2)
 @click.option('--from_file', required=False)
 @click.option('--from_pipe/--not-from-pipe', default=False)
 @pass_context
@@ -74,6 +78,9 @@ def cli(ctx, scroll_max, from_file, from_pipe):
                 keywords.append(line)
         except Exception as e:
             raise RuntimeError("Error while reading pipe: %s" % (e))
+
+    if len(keywords) == 0:
+        l.WARN("Nothing to search, got: %s" %(keywords))
 
     crawler = GoogleImageMetaDataLogger(keywords,
                                         scroll_max=scroll_max)

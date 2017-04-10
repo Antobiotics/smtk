@@ -38,7 +38,7 @@ class GoogleImageCrawler:
     def on_entry(self, keyword, entry):
         raise RuntimeError('on_entry must be implemented')
 
-    def on_page_source(self):
+    def on_page_source(self, keyword):
         raise RuntimeError("on_page_source must be implemented")
 
 
@@ -71,7 +71,7 @@ class GoogleImageCrawler:
 
     def crawl_keyword(self, keyword):
         self.update_page_source(keyword)
-        self.on_page_source()
+        self.on_page_source(keyword)
 
     def crawl(self):
         for keyword in self.keywords:

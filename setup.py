@@ -23,7 +23,7 @@ setup(
         "smtk.utils",
         "smtk.examples",
         "smtk.commands",
-        "smtk.commands.twitter"
+        "smtk.commands.twitter",
         "smtk.commands.google"
     ],
     install_requires=[
