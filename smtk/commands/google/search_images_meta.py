@@ -4,7 +4,7 @@ import json
 import click
 import singer
 
-from pattern.web import Element, plaintext
+from bs4 import BeautifulSoup
 
 import smtk.utils.logger as l
 
@@ -41,13 +41,11 @@ class GoogleImageMetaDataLogger(GoogleImageKeywordCrawler):
         singer.write_records(self.stream_name, [data])
 
     def on_page_source(self):
-        elements = (
-            Element(self.page_source)
-            .by_tag('div.rg_meta')
-        )
+        soup = BeautifulSoup(self.page_source)
+        elements = soup.findAll("div", { "class" : "rg_meta" })
 
         for element in elements:
-            meta_data_str = plaintext(element.source)
+            meta_data_str = element.text
             try:
                 meta_data = json.loads(meta_data_str)
                 self.on_entry(meta_data)

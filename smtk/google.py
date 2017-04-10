@@ -1,7 +1,8 @@
 import time
 import random
-import Queue
+
 import multiprocessing
+from queue import Queue
 
 from threading import Thread
 
@@ -87,7 +88,7 @@ class GoogleImageCrawler():
     def __init__(self, task_cls, queue_data, **kwargs):
         self.task_cls = task_cls
         self.queue_data = queue_data
-        self.queue = Queue.Queue()
+        self.queue = Queue()
         self.__dict__.update(kwargs)
 
     @property
