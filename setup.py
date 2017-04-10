@@ -40,6 +40,10 @@ setup(
         'better_exceptions',
         'BASC-py4chan',
         'beautifulsoup4',
-        'selenium'
+        'selenium',
+        'boto'
+    ],
+    dependency_links = [
+        'git+https://git@github.com/spotify/luigi.git'
     ]
 )

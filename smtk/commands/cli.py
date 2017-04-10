@@ -40,7 +40,12 @@ class SMTKCommand(click.MultiCommand):
     def is_command(self, filename):
         is_py = filename.endswith('.py')
         is_init = filename == '__init__.py'
-        return is_py and not is_init
+        is_errors = filename == 'errors.py'
+        return (
+            is_py and
+            not is_init and
+            not is_errors
+        )
 
     def list_commands(self, ctx):
         rv = []
