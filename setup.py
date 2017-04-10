@@ -24,6 +24,7 @@ setup(
         "smtk.examples",
         "smtk.commands",
         "smtk.commands.twitter"
+        "smtk.commands.google"
     ],
     install_requires=[
         'python-twitter',
@@ -37,6 +38,8 @@ setup(
         'pymongo',
         'click-completion',
         'better_exceptions',
-        'BASC-py4chan'
+        'BASC-py4chan',
+        'pattern',
+        'selenium'
     ]
 )

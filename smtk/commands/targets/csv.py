@@ -50,7 +50,6 @@ def convert(lines, configuration):
             filename = cfg_filename
             if filename == "":
                 filename = data['stream'] + '.csv'
-            print(filename)
             flattened_record = flatten(data['record'])
             header = flattened_record.keys()
 
@@ -63,7 +62,6 @@ def convert(lines, configuration):
 
                 if is_file_empty(filename):
                     writer.writeheader()
-                print(flattened_record)
                 writer.writerow(flattened_record)
 
         else:
