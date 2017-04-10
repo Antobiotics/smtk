@@ -18,7 +18,7 @@ def convert(lines, configuration):
     s3_client = S3Client(access_key_id,
                          secret_access_key)
 
-    output_files = {}
+    targets = {}
 
     for line in lines:
         try:
@@ -43,24 +43,27 @@ def convert(lines, configuration):
                 's3://{bucket}/{filename}'
                 .format(bucket=bucket, filename=filename)
             )
-            target = S3Target(target_path, client=s3_client)
 
             record = data['record']
-            #print(output_files)
+            print(targets)
 
-            if not target.exists():
-                output_files[filename] = {
+            target = None
+            if not target_path in targets.keys():
+                target = S3Target(target_path, client=s3_client)
+                targets[target_path] = {
                     'target': target,
                     'file': target.open('w')
                 }
 
-            output_files[filename]['file'].write(json.dumps(record) + '\n')
+            target = targets[target_path]['target']
+
+            targets[target_path]['file'].write(json.dumps(record) + '\n')
 
         else:
             l.WARN(errors.UNEXPECTED_MESSAGE_TYPE % (data['type'], data))
 
-    for filename in output_files:
-        output_files[filename]['target'].close()
+    for target_path in targets:
+        targets[target_path]['file'].close()
 
 
 @click.command('s3', short_help="Writes JSON data to s3")
