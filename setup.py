@@ -39,7 +39,7 @@ setup(
         'click-completion',
         'better_exceptions',
         'BASC-py4chan',
-        'pattern',
+        'beautifulsoup4',
         'selenium'
     ]
 )
