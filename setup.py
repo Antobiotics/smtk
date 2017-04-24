@@ -23,6 +23,7 @@ setup(
         "smtk.utils",
         "smtk.examples",
         "smtk.commands",
+        "smtk.commands.targets",
         "smtk.commands.twitter",
         "smtk.commands.google"
     ],

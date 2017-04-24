@@ -7,13 +7,14 @@ from queue import Queue
 from threading import Thread
 
 from selenium.webdriver import Chrome
+from selenium.webdriver import ChromeOptions
 
 import smtk.utils.logger as l
 
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
 
-def random_js_scroll():
-    scroll_size = random.randrange(6000, 100000)
-    return "window.scrollTo(0, %s)" % (str(scroll_size))
+def scroll_bottom():
+    return "window.scrollTo(0, document.body.scrollHeight);"
 
 def random_sleep():
     sleep_sec = random.randrange(2, 10)
@@ -54,9 +55,15 @@ class GoogleImageKeywordCrawler():
             self.search_url_suffix])
 
     def update_page_source(self):
+        l.INFO("""
+               Starting page source update, scrolling: %s times
+               """ % (self.scroll_max))
+
         url = self.build_search_url()
 
-        driver = Chrome()
+        options = ChromeOptions()
+        options.add_argument('--user-agent=%s' %(USER_AGENT))
+        driver = Chrome(chrome_options=options)
         driver.get(url)
 
 
@@ -64,7 +71,20 @@ class GoogleImageKeywordCrawler():
         try:
 
             while num_scrolls < self.scroll_max:
-                driver.execute_script(random_js_scroll())
+                l.INFO("New Scroll: %s" % (num_scrolls + 1))
+
+                driver.execute_script(scroll_bottom())
+
+                fetch_more_button = (
+                    driver
+                    .find_element_by_css_selector(".ksb._kvc")
+                )
+
+                if fetch_more_button:
+                    l.INFO("Fetch More Button Found")
+                    driver.execute_script("document.querySelector('.ksb._kvc').click();")
+                    driver.execute_script(scroll_bottom())
+
                 self.page_source = driver.page_source
                 random_sleep()
                 num_scrolls+=1
@@ -99,16 +119,16 @@ class GoogleImageCrawler():
         for obj in self.queue_data:
             self.queue.put(obj)
 
+    def crawl(self, keyword):
+        self.task_cls(keyword=keyword,
+                      scroll_max=self.__dict__['scroll_max']).crawl()
+
     def worker(self):
         while not self.queue.empty():
             try:
                 keyword = self.queue.get()
 
-                (
-                    self.task_cls(keyword=keyword,
-                                  scroll_max=self.__dict__['scroll_max'])
-                    .crawl()
-                )
+                self.crawl(keyword)
 
                 self.queue.task_done()
             except Exception as e:
