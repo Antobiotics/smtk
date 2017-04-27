@@ -64,6 +64,7 @@ class GoogleImageKeywordCrawler():
         options = ChromeOptions()
         options.add_argument('--user-agent=%s' %(USER_AGENT))
         driver = Chrome(chrome_options=options)
+
         driver.get(url)
 
 
@@ -144,5 +145,3 @@ class GoogleImageCrawler():
             t.start()
 
         self.queue.join()
-
-
