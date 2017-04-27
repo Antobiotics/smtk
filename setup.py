@@ -42,6 +42,7 @@ setup(
         'BASC-py4chan',
         'beautifulsoup4',
         'selenium',
+        'instaLooter',
         'boto'
     ],
     dependency_links = [
